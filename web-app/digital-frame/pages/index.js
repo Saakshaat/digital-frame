@@ -7,7 +7,6 @@ const ping_url = `http://pictureFrame.local/ping`;
 const img_upload = `http://pictureFrame.local/img_data`;
 
 export async function getStaticProps(context) {
-  const timeoutId = setTimeout(() => controller.abort(), 6000);
   var status = {};
   try {
     const res = await fetch(ping_url, { mode: "cors", method: "GET" });
