@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
 
+import useSWR from "swr";
+
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 const ping_url = `http://pictureFrame.local/ping`;
 const img_upload = `http://pictureFrame.local/img_data`;
 
-export async function getStaticProps(context) {
+async function checkStatus(url) {
   var status = {};
   try {
     const res = await fetch(ping_url, { mode: "cors", method: "GET" });
@@ -27,10 +29,13 @@ export async function getStaticProps(context) {
   };
 }
 
+// async function uploadImg()
+
 export default function Home({ status }) {
   var img_uri = useRef("");
-
   const [responseGood, setResponse] = useState(null);
+  const {status, error} = useSWR(ping_url, checkStatus);
+  
 
   const validImageUri = async (imageUri) =>
     ["jpeg", "jpg", "png"].includes(
@@ -94,15 +99,22 @@ export default function Home({ status }) {
           </span>
         </div>
         <br />
-        {status.value == 'Active' ? (
+        {status.value == "Active" ? (
           <div>
-            <input ref={img_uri} placeholder="Enter Image URI" height="1rem" className={styles.input}/>
+            <input
+              ref={img_uri}
+              placeholder="Enter Image URI"
+              height="1rem"
+              className={styles.input}
+            />
             <button onClick={handleSubmit} className={styles.uploadButton}>
               Upload
             </button>
             <br />
             <br />
-            <div className={styles.uploadStatus}>{responseGood ? responseGood : ""}</div>
+            <div className={styles.uploadStatus}>
+              {responseGood ? responseGood : ""}
+            </div>
           </div>
         ) : (
           <div></div>
