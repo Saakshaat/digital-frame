@@ -16,9 +16,9 @@ export async function getStaticProps(context) {
         ? { value: "Active", color: "#18A558" }
         : { value: "Unavailable", color: "#750000" };
   } catch (err) {
+    console.error(err);
     status = { value: "Unavailable", color: "#750000" };
   }
-  if (status.length === 0) status = "Unavailable";
 
   return {
     props: {
