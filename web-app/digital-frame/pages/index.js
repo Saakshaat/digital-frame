@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { useRef, useState } from "react";
 
 import Head from "next/head";
